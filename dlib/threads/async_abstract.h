@@ -21,6 +21,7 @@ namespace dlib
               DLIB_NUM_THREADS threads, otherwise it will contain
               std::thread::hardware_concurrency() threads.
     !*/
+    void delete_default_thread_pool();
 
 // ----------------------------------------------------------------------------------------
 

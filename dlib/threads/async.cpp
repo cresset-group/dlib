@@ -32,10 +32,21 @@ namespace dlib
 
 // ----------------------------------------------------------------------------------------
 
+    static thread_pool *tp{nullptr};
+
     thread_pool& default_thread_pool()
     {
-        static thread_pool tp(impl::default_num_threads());
-        return tp;
+         if (tp == nullptr)
+         {
+             tp = new thread_pool(impl::default_num_threads());
+         }
+        return *tp;
+    }
+    
+    void delete_default_thread_pool()
+    {
+        delete tp;
+        tp = nullptr;
     }
 }
 
