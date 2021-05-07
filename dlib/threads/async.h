@@ -101,7 +101,7 @@ namespace dlib
         Args&&... args 
     )
     {
-        return async(*default_thread_pool(), std::forward<Function>(f), std::forward<Args>(args)...);
+        return async(default_thread_pool(), std::forward<Function>(f), std::forward<Args>(args)...);
     }
 
 }
