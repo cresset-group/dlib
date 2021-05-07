@@ -64,7 +64,8 @@ namespace dlib
         const trainer_type& trainer,
         const std::vector<sample_type>& x,
         const std::vector<label_type>& y,
-        const long folds
+        const long folds,
+        std::vector<std::pair<long, label_type>>& shufIdxPredY
     )
     {
 
@@ -100,9 +101,12 @@ namespace dlib
             x_train.clear();
             y_train.clear();
 
+            std::vector<long> testIndices;
+
             // load up the test samples
             for (long cnt = 0; cnt < num_in_test; ++cnt)
             {
+                testIndices.push_back(next_test_idx);
                 x_test.push_back(x[next_test_idx]);
                 y_test.push_back(y[next_test_idx]);
                 next_test_idx = (next_test_idx + 1)%x.size();
@@ -128,6 +132,9 @@ namespace dlib
                     // compute error
                     const double output = df(x_test[j]);
                     const double temp = output - y_test[j];
+
+                    // Save cross-validated values
+                    shufIdxPredY.push_back(std::make_pair(testIndices[j], output));
 
                     rs_mae.add(std::abs(temp));
                     rs.add(temp*temp);

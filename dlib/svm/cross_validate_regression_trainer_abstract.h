@@ -51,7 +51,8 @@ namespace dlib
         const trainer_type& trainer,
         const std::vector<sample_type>& x,
         const std::vector<label_type>& y,
-        const long folds
+        const long folds,
+        std::vector<std::pair<long, label_type>>& shufIdxPredY
     );
     /*!
         requires

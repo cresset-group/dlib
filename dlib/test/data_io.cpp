@@ -70,7 +70,8 @@ namespace
             trainer.set_trainer(krr_trainer<kernel_type>());
 
             randomize_samples(samples, labels);
-            matrix<double> cv = cross_validate_multiclass_trainer(trainer, samples, labels, 4);
+            std::vector<std::pair<long, scalar_type>> shufIdxPredY;
+            matrix<double> cv = cross_validate_multiclass_trainer(trainer, samples, labels, 4, shufIdxPredY);
 
             dlog << LINFO << "confusion matrix: \n" << cv;
             const scalar_type cv_accuracy = sum(diag(cv))/sum(cv);
@@ -93,7 +94,7 @@ namespace
                 typedef linear_kernel<dsample_type> kernel_type;
                 trainer.set_trainer(rr_trainer<kernel_type>());
 
-                cv = cross_validate_multiclass_trainer(trainer, dsamples, labels, 4);
+                cv = cross_validate_multiclass_trainer(trainer, dsamples, labels, 4, shufIdxPredY);
 
                 dlog << LINFO << "dense confusion matrix: \n" << cv;
                 const scalar_type cv_accuracy = sum(diag(cv))/sum(cv);

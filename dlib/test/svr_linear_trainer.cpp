@@ -69,7 +69,8 @@ namespace
         linear_trainer.set_c(30);
         linear_trainer.set_epsilon_insensitivity(0.001);
 
-        matrix<double> res = cross_validate_regression_trainer(linear_trainer, samples, targets, 5);
+        std::vector<std::pair<long, scalar_type>> shufIdxPredY;
+        matrix<double> res = cross_validate_regression_trainer(linear_trainer, samples, targets, 5, shufIdxPredY);
         dlog << LINFO << "MSE and R-Squared: "<< res;
         DLIB_TEST(res(0) < 1e-4);
         DLIB_TEST(res(1) > 0.99);

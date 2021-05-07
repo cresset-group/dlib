@@ -86,7 +86,9 @@ namespace
             trainer.set_c(0.1);
             df = trainer.train(samples2, labels2);
 
-            matrix<double> res = test_multiclass_decision_function(df, samples, labels);
+            const std::vector<long> testIndices(20, 1);
+            std::vector<std::pair<long, int>> shufIdxPredY;
+            matrix<double> res = test_multiclass_decision_function(df, samples, labels, testIndices, shufIdxPredY);
             dlog << LINFO << "test: \n" << res;
             dlog << LINFO << df.weights;
             dlog << LINFO << df.b;
@@ -142,7 +144,9 @@ namespace
             trainer.set_c(0.1);
             df = trainer.train(samples2, labels2);
 
-            matrix<double> res = test_multiclass_decision_function(df, samples, labels);
+            const std::vector<long> testIndices(20, 1);
+            std::vector<std::pair<long, int>> shufIdxPredY;
+            matrix<double> res = test_multiclass_decision_function(df, samples, labels, testIndices, shufIdxPredY);
             dlog << LINFO << "test: \n" << res;
             dlog << LINFO << df.weights;
             dlog << LINFO << df.b;
@@ -170,7 +174,8 @@ namespace
             trainer.set_epsilon(0.000001);
 
             randomize_samples(samples, labels);
-            matrix<double> cv = cross_validate_multiclass_trainer(trainer, samples, labels, 4);
+            std::vector<std::pair<long, scalar_type>> shufIdxPredY;
+            matrix<double> cv = cross_validate_multiclass_trainer(trainer, samples, labels, 4, shufIdxPredY);
 
             dlog << LINFO << "confusion matrix: \n" << cv;
             const scalar_type cv_accuracy = sum(diag(cv))/sum(cv);
@@ -190,7 +195,7 @@ namespace
                 svm_multiclass_linear_trainer<kernel_type> trainer;
                 trainer.set_c(100);
 
-                cv = cross_validate_multiclass_trainer(trainer, dsamples, labels, 4);
+                cv = cross_validate_multiclass_trainer(trainer, dsamples, labels, 4, shufIdxPredY);
 
                 dlog << LINFO << "dense confusion matrix: \n" << cv;
                 const scalar_type cv_accuracy = sum(diag(cv))/sum(cv);

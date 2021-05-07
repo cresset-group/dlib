@@ -88,7 +88,8 @@ int main()
     // values.  Note that we need to randomly shuffle the samples first.  See the svm_ex.cpp 
     // for a discussion of why this is important. 
     randomize_samples(samples, targets);
-    cout << "MSE and R-Squared: "<< cross_validate_regression_trainer(trainer, samples, targets, 5) << endl;
+    std::vector<std::pair<long, double>> shufIdxPredY;
+    cout << "MSE and R-Squared: "<< cross_validate_regression_trainer(trainer, samples, targets, 5, shufIdxPredY) << endl;
     // The output is: 
     // MSE and R-Squared: 1.65984e-05    0.999901
 }

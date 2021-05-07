@@ -129,7 +129,8 @@ namespace
             trainer.set_trainer(hist_trainer, 1, 2);
 
             randomize_samples(samples, labels);
-            matrix<double> res = cross_validate_multiclass_trainer(trainer, samples, labels, 2);
+            std::vector<std::pair<long, label_type>> shufIdxPredY;
+            matrix<double> res = cross_validate_multiclass_trainer(trainer, samples, labels, 2, shufIdxPredY);
 
             print_spinner();
 
@@ -187,7 +188,8 @@ namespace
 
             DLIB_TEST(df3(samples[0])  == labels[0]);
             DLIB_TEST(df3(samples[90])  == labels[90]);
-            res = test_multiclass_decision_function(df3, samples, labels);
+            const std::vector<long> testIndices(210, 1);
+            res = test_multiclass_decision_function(df3, samples, labels, testIndices, shufIdxPredY);
 
             DLIB_TEST(res == ans);
 

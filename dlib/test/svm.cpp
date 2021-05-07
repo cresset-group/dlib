@@ -245,12 +245,13 @@ namespace
 
 
         randomize_samples(samples, labels);
-        dlog << LINFO << "KRR MSE and R-squared: "<< cross_validate_regression_trainer(krr_test, samples, labels, 6);
-        dlog << LINFO << "SVR MSE and R-squared: "<< cross_validate_regression_trainer(svr_test, samples, labels, 6);
-        matrix<double,1,4> cv = cross_validate_regression_trainer(krr_test, samples, labels, 6);
+        std::vector<std::pair<long, double>> shufIdxPredY;
+        dlog << LINFO << "KRR MSE and R-squared: "<< cross_validate_regression_trainer(krr_test, samples, labels, 6, shufIdxPredY);
+        dlog << LINFO << "SVR MSE and R-squared: "<< cross_validate_regression_trainer(svr_test, samples, labels, 6, shufIdxPredY);
+        matrix<double,1,4> cv = cross_validate_regression_trainer(krr_test, samples, labels, 6, shufIdxPredY);
         DLIB_TEST(cv(0) < 1e-4);
         DLIB_TEST(cv(1) > 0.99);
-        cv = cross_validate_regression_trainer(svr_test, samples, labels, 6);
+        cv = cross_validate_regression_trainer(svr_test, samples, labels, 6, shufIdxPredY);
         DLIB_TEST(cv(0) < 1e-4);
         DLIB_TEST(cv(1) > 0.99);
 
@@ -258,11 +259,11 @@ namespace
 
 
         randomize_samples(samples2, labels2);
-        dlog << LINFO << "KRR MSE and R-squared: "<< cross_validate_regression_trainer(krr_test, samples2, labels2, 6);
-        dlog << LINFO << "SVR MSE and R-squared: "<< cross_validate_regression_trainer(svr_test, samples2, labels2, 6);
-        cv = cross_validate_regression_trainer(krr_test, samples2, labels2, 6);
+        dlog << LINFO << "KRR MSE and R-squared: "<< cross_validate_regression_trainer(krr_test, samples2, labels2, 6, shufIdxPredY);
+        dlog << LINFO << "SVR MSE and R-squared: "<< cross_validate_regression_trainer(svr_test, samples2, labels2, 6, shufIdxPredY);
+        cv = cross_validate_regression_trainer(krr_test, samples2, labels2, 6, shufIdxPredY);
         DLIB_TEST(cv(0) < 1e-4);
-        cv = cross_validate_regression_trainer(svr_test, samples2, labels2, 6);
+        cv = cross_validate_regression_trainer(svr_test, samples2, labels2, 6, shufIdxPredY);
         DLIB_TEST(cv(0) < 1e-4);
 
         dlog << LINFO << "   end test_regression()";

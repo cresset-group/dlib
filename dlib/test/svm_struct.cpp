@@ -584,27 +584,29 @@ namespace
             DLIB_TEST(max(abs(df1.b - df4.b)) < 1e-2);
             DLIB_TEST(max(abs(df1.b - df5.b)) < 1e-2);
 
-            matrix<double> res = test_multiclass_decision_function(df1, samples, labels);
+            const std::vector<long> testIndices(1000, 1);
+            std::vector<std::pair<long, scalar_type>> shufIdxPredY;
+            matrix<double> res = test_multiclass_decision_function(df1, samples, labels, testIndices, shufIdxPredY);
             dlog << LINFO << res;
             dlog << LINFO << "accuracy: " << sum(diag(res))/sum(res);
             DLIB_TEST(sum(diag(res)) == samples.size());
 
-            res = test_multiclass_decision_function(df2, samples, labels);
+            res = test_multiclass_decision_function(df2, samples, labels, testIndices, shufIdxPredY);
             dlog << LINFO << res;
             dlog << LINFO << "accuracy: " << sum(diag(res))/sum(res);
             DLIB_TEST(sum(diag(res)) == samples.size());
 
-            res = test_multiclass_decision_function(df3, samples, labels);
+            res = test_multiclass_decision_function(df3, samples, labels, testIndices, shufIdxPredY);
             dlog << LINFO << res;
             dlog << LINFO << "accuracy: " << sum(diag(res))/sum(res);
             DLIB_TEST(sum(diag(res)) == samples.size());
 
-            res = test_multiclass_decision_function(df4, samples, labels);
+            res = test_multiclass_decision_function(df4, samples, labels, testIndices, shufIdxPredY);
             dlog << LINFO << res;
             dlog << LINFO << "accuracy: " << sum(diag(res))/sum(res);
             DLIB_TEST(sum(diag(res)) == samples.size());
 
-            res = test_multiclass_decision_function(df5, samples, labels);
+            res = test_multiclass_decision_function(df5, samples, labels, testIndices, shufIdxPredY);
             dlog << LINFO << res;
             dlog << LINFO << "accuracy: " << sum(diag(res))/sum(res);
             DLIB_TEST(sum(diag(res)) == samples.size());

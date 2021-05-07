@@ -96,7 +96,8 @@ int main()
         // As an aside, always shuffle the order of the samples before doing cross validation.  
         // For a discussion of why this is a good idea see the svm_ex.cpp example.
         randomize_samples(samples, labels);
-        cout << "cross validation: \n" << cross_validate_multiclass_trainer(trainer, samples, labels, 5) << endl;
+        std::vector<std::pair<long, double>> shufIdxPredY;
+        cout << "cross validation: \n" << cross_validate_multiclass_trainer(trainer, samples, labels, 5, shufIdxPredY) << endl;
         // The output is shown below.  It is the confusion matrix which describes the results.  Each row 
         // corresponds to a class of data and each column to a prediction.  Reading from top to bottom, 
         // the rows correspond to the class labels if the labels have been listed in sorted order.  So the
@@ -149,7 +150,8 @@ int main()
         cout << "predicted label: "<< df3(samples[0])  << ", true label: "<< labels[0] << endl;
         cout << "predicted label: "<< df3(samples[90]) << ", true label: "<< labels[90] << endl;
         // Test df3 on the samples and labels and print the confusion matrix.
-        cout << "test deserialized function: \n" << test_multiclass_decision_function(df3, samples, labels) << endl;
+        const std::vector<long> testIndices(210, 1);
+        cout << "test deserialized function: \n" << test_multiclass_decision_function(df3, samples, labels, testIndices, shufIdxPredY) << endl;
 
 
 

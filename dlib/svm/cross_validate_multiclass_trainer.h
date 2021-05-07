@@ -21,10 +21,11 @@ namespace dlib
     const matrix<double> test_multiclass_decision_function (
         const dec_funct_type& dec_funct,
         const std::vector<sample_type>& x_test,
-        const std::vector<label_type>& y_test
+        const std::vector<label_type>& y_test,
+        const std::vector<long>& testIndices,
+        std::vector<std::pair<long, label_type>>& shufIdxPredY
     )
     {
-
         // make sure requires clause is not broken
         DLIB_ASSERT( is_learning_problem(x_test,y_test) == true,
                     "\tmatrix test_multiclass_decision_function()"
@@ -56,7 +57,11 @@ namespace dlib
                 continue;
 
             const unsigned long truth = iter->second;
-            const unsigned long pred  = label_to_int[dec_funct(x_test[i])];
+
+            const label_type value = dec_funct(x_test[i]);
+            shufIdxPredY.push_back(std::make_pair(testIndices[i], value));
+
+            const unsigned long pred  = label_to_int[value];
 
             res(truth,pred) += 1;
         }
@@ -81,7 +86,8 @@ namespace dlib
         const trainer_type& trainer,
         const std::vector<sample_type>& x,
         const std::vector<label_type>& y,
-        const long folds
+        const long folds,
+        std::vector<std::pair<long, label_type>>& shufIdxPredY
     )
     {
         typedef typename trainer_type::mem_manager_type mem_manager_type;
@@ -142,6 +148,8 @@ namespace dlib
             x_train.clear();
             y_train.clear();
 
+            std::vector<long> testIndices;
+
             // load up the test samples
             for (unsigned long j = 0; j < all_labels.size(); ++j)
             {
@@ -155,6 +163,7 @@ namespace dlib
                     if (y[next] == label)
                     {
                         x_test.push_back(x[next]);
+                        testIndices.push_back(next);
                         y_test.push_back(label);
                         ++cur;
                     }
@@ -188,7 +197,7 @@ namespace dlib
             try
             {
                 // do the training and testing
-                res += test_multiclass_decision_function(trainer.train(x_train,y_train),x_test,y_test);
+                res += test_multiclass_decision_function(trainer.train(x_train,y_train),x_test,y_test, testIndices, shufIdxPredY);
             }
             catch (invalid_nu_error&)
             {

@@ -19,7 +19,9 @@ namespace dlib
     const matrix<double> test_multiclass_decision_function (
         const dec_funct_type& dec_funct,
         const std::vector<sample_type>& x_test,
-        const std::vector<label_type>& y_test
+        const std::vector<label_type>& y_test,
+        const std::vector<long>& testIndices,
+        std::vector<std::pair<long, label_type>>& shufIdxPredY
     );
     /*!
         requires
@@ -59,7 +61,8 @@ namespace dlib
         const trainer_type& trainer,
         const std::vector<sample_type>& x,
         const std::vector<label_type>& y,
-        const long folds
+        const long folds,
+        std::vector<std::pair<long, label_type>>& shufIdxPredY
     );
     /*!
         requires
